@@ -45,9 +45,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors(builder => builder
-     .AllowAnyOrigin()
+      .WithOrigins("*")
+      .SetIsOriginAllowedToAllowWildcardSubdomains()
+      .AllowAnyOrigin()
      .AllowAnyMethod()
      .AllowAnyHeader());
+	 
+	 
 app.UseAuthentication();
 app.UseAuthorization();
 

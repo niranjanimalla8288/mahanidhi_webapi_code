@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahaanidhiWebAPI", "MahaanidhiWebAPI.csproj", "{148BD6BE-01F4-424F-B18C-45802DECADA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{148BD6BE-01F4-424F-B18C-45802DECADA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148BD6BE-01F4-424F-B18C-45802DECADA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148BD6BE-01F4-424F-B18C-45802DECADA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148BD6BE-01F4-424F-B18C-45802DECADA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08976603-6F83-4698-A9BA-8A9471347776}
+	EndGlobalSection
+EndGlobal

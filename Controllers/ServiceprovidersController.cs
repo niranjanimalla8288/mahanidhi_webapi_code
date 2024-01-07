@@ -92,26 +92,6 @@ namespace MahaanidhiWebAPI.Controllers
         }
 
 
-        [Route("countMainCategoryID")]
-        [HttpGet]
-        public async Task<IActionResult> CountServiceprovider(int id)
-        {
-            if (_context.Serviceproviders == null)
-            {
-                return NotFound();
-            }
-            var serviceprovider = _context.Serviceproviders.Count(c=>c.MainCategoryId==id);
-            if (serviceprovider == null)
-            {
-                return NotFound();
-            }
-
-            _context.Serviceproviders.Remove(serviceprovider);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
         // POST: api/Serviceproviders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize]

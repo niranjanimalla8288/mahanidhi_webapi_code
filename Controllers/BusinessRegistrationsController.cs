@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MahaanidhiWebAPI.Entities;
 using MahaanidhiWebAPI.InputDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,32 +12,124 @@ namespace MahaanidhiWebAPI.Controllers
     [ApiController]
     public class BusinessRegistrationsController : ControllerBase
     {
-        public MahaanidhieximContext _context=new MahaanidhieximContext();
+        private readonly MahaanidhieximContext _context;
+        private readonly IMapper _mapper;
 
-
-        [HttpGet]
-        public IEnumerable<BusinessRegistration> get() { 
-        
-            return _context.BusinessRegistrations.ToList();
+        public BusinessRegistrationsController(MahaanidhieximContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
         }
 
-        [HttpPost]
-
-        public BusinessRegistration post(BusinessRegistrationDTO businessRegistrationDTO)
+        // GET: api/BusinessRegistrations
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BusinessRegistrationDTO>>> GetBusinessRegistrations()
         {
-            BusinessRegistration businessRegistration=new BusinessRegistration();
+            if (_context.BusinessRegistrations == null)
+            {
+                return NotFound();
+            }
+            var BusinessRegistrations = await _context.BusinessRegistrations.ToListAsync();
+            List<BusinessRegistrationDTO> lstBusinessRegistrationDTO = new List<BusinessRegistrationDTO>();
+            lstBusinessRegistrationDTO = _mapper.Map<List<BusinessRegistrationDTO>>(BusinessRegistrations);
+            return lstBusinessRegistrationDTO;
+        }
 
-            businessRegistration.FirstName=businessRegistrationDTO.FirstName;
-            businessRegistration.LastName = businessRegistrationDTO.LastName;
-            businessRegistration.Email=businessRegistrationDTO.Email;
-            businessRegistration.CompanyName = businessRegistrationDTO.CompanyName;
-            businessRegistration.Address = businessRegistrationDTO.Address;
-            businessRegistration.PhoneNumber= businessRegistrationDTO.PhoneNumber;
+        // GET: api/BusinessRegistrations/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BusinessRegistrationDTO>> GetbusinessRegistration(int id)
+        {
+            if (_context.BusinessRegistrations == null)
+            {
+                return NotFound();
+            }
+            var businessRegistration = await _context.BusinessRegistrations.FindAsync(id);
+            BusinessRegistrationDTO BusinessRegistrationDTO = _mapper.Map<BusinessRegistrationDTO>(businessRegistration);
 
-            _context.Add(businessRegistration);
-            _context.SaveChanges();
-            return businessRegistration;
+            //MyOwnClass myOwnClass = _mapper.Map<MyOwnClass>(businessRegistration);
 
+            if (businessRegistration == null)
+            {
+                return NotFound();
+            }
+
+            return BusinessRegistrationDTO;
+        }
+
+        // PUT: api/BusinessRegistrations/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutbusinessRegistration(int id, BusinessRegistrationDTO BusinessRegistrationDTO)
+        {
+            if (id != BusinessRegistrationDTO.Id)
+            {
+                return BadRequest();
+            }
+
+            BusinessRegistration businessRegistration = _mapper.Map<BusinessRegistration>(BusinessRegistrationDTO);
+            if (businessRegistration != null)
+                _context.Entry(businessRegistration).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!businessRegistrationExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/BusinessRegistrations
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        [HttpPost]
+        public async Task<ActionResult<BusinessRegistrationDTO>> PostbusinessRegistration(BusinessRegistrationDTO BusinessRegistrationDTO)
+        {
+            if (BusinessRegistrationDTO == null)
+            {
+                return Problem("Entity set 'MahaanidhieximContext.BusinessRegistrations'  is null.");
+            }
+            BusinessRegistration businessRegistration = _mapper.Map<BusinessRegistration>(BusinessRegistrationDTO);
+            _context.BusinessRegistrations.Add(businessRegistration);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetbusinessRegistration", new { id = businessRegistration.Id }, businessRegistration);
+        }
+
+        // DELETE: api/BusinessRegistrations/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletebusinessRegistration(int id)
+        {
+            if (_context.BusinessRegistrations == null)
+            {
+                return NotFound();
+            }
+            var businessRegistration = await _context.BusinessRegistrations.FindAsync(id);
+            if (businessRegistration == null)
+            {
+                return NotFound();
+            }
+
+            _context.BusinessRegistrations.Remove(businessRegistration);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool businessRegistrationExists(int id)
+        {
+            return (_context.BusinessRegistrations?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

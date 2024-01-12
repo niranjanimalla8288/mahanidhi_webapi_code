@@ -19,5 +19,5 @@ public partial class Customer
 
     public string? LoginOtp { get; set; }
 
-    //public virtual ICollection<Serviceproviderreview> Serviceproviderreviews { get; set; } = new List<Serviceproviderreview>();
+    public virtual ICollection<Serviceproviderreview> Serviceproviderreviews { get; set; } = new List<Serviceproviderreview>();
 }

@@ -11,9 +11,13 @@ public partial class Customer
 
     public string? MobileNumber { get; set; }
 
+    public string? Email { get; set; }
+
+    public string? Address { get; set; }
+
     public DateTime? LastLogin { get; set; }
 
     public string? LoginOtp { get; set; }
 
-    public virtual ICollection<Serviceproviderreview> Serviceproviderreviews { get; set; } = new List<Serviceproviderreview>();
+    //public virtual ICollection<Serviceproviderreview> Serviceproviderreviews { get; set; } = new List<Serviceproviderreview>();
 }

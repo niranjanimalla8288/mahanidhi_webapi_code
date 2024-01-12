@@ -12,10 +12,14 @@ namespace MahaanidhiWebAPI.InputDTO
 
         public string? MobileNumber { get; set; }
 
+        public string? Email { get; set; }
+
+        public string? Address { get; set; }
+
         public DateTime? LastLogin { get; set; }
 
         public string? LoginOtp { get; set; }
 
-        public ICollection<ServiceproviderreviewDTO> ServiceproviderreviewsDTO { get; set; } = new List<ServiceproviderreviewDTO>();
+        //public ICollection<ServiceproviderreviewDTO> ServiceproviderreviewsDTO { get; set; } = new List<ServiceproviderreviewDTO>();
     }
 }

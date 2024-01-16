@@ -103,9 +103,14 @@ namespace MahaanidhiWebAPI.Controllers
             BusinessRegistration businessRegistration = _mapper.Map<BusinessRegistration>(BusinessRegistrationDTO);
             _context.BusinessRegistrations.Add(businessRegistration);
             await _context.SaveChangesAsync();
+            try{
+                  //Send mail
+            Helper.MailSender.SendRegistrationEnquiryMail(BusinessRegistrationDTO.CompanyName,BusinessRegistrationDTO.Email,BusinessRegistrationDTO.PhoneNumber);  
+            }
+            catch{
 
-            //Send mail
-            Helper.MailSender.SendRegistrationEnquiryMail(BusinessRegistrationDTO.CompanyName,BusinessRegistrationDTO.Email,BusinessRegistrationDTO.PhoneNumber);
+            }
+            
 
             return CreatedAtAction("GetbusinessRegistration", new { id = businessRegistration.Id }, businessRegistration);
         }

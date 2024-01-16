@@ -105,7 +105,7 @@ namespace MahaanidhiWebAPI.Controllers
             await _context.SaveChangesAsync();
             try{
                   //Send mail
-            Helper.MailSender.SendRegistrationEnquiryMail(BusinessRegistrationDTO.CompanyName,BusinessRegistrationDTO.Email,BusinessRegistrationDTO.PhoneNumber);  
+            Helper.MailSender.SendRegistrationEnquiryMail(BusinessRegistrationDTO.Email,BusinessRegistrationDTO.PhoneNumber,BusinessRegistrationDTO.CompanyName);  
             }
             catch{
 

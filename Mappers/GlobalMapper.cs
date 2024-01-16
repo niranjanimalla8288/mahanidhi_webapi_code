@@ -70,6 +70,9 @@ namespace MahaanidhiWebAPI.Mappers
             CreateMap<LeadspositionRange, LeadpositionrangeDTO>();
             CreateMap<LeadpositionrangeDTO, LeadspositionRange>();
 
+            CreateMap<LeadsSent, LeadsSentDTO>();
+            CreateMap<LeadsSentDTO, LeadsSent>();
+
             CreateMap<Serviceproviderbadge, ServiceproviderbadgeDTO>();
             CreateMap<ServiceproviderbadgeDTO, Serviceproviderbadge>();
 

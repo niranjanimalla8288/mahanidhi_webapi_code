@@ -4,7 +4,9 @@
     {
         public int Id { get; set; }
 
-        public int? Cityid { get; set; }
+        public int? CityId { get; set; }
+
+        public int CategoryId { get; set; }
 
         public string? AddImage { get; set; }
 
@@ -14,6 +16,5 @@
 
         public DateTime? ToDate { get; set; }
 
-        public bool? IsActive { get; set; }
     }
 }

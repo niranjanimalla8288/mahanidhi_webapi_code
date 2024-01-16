@@ -43,6 +43,8 @@ public partial class MahaanidhieximContext : DbContext
 
     public virtual DbSet<LeadspositionRange> LeadspositionRanges { get; set; }
 
+    public virtual DbSet<LeadsSent> LeadsSents{ get; set; }
+
     public virtual DbSet<Offer> Offers { get; set; }
 
     public virtual DbSet<Organization> Organizations { get; set; }
@@ -101,10 +103,10 @@ public partial class MahaanidhieximContext : DbContext
                 .HasMaxLength(45)
                 .HasColumnName("add_place");
             entity.Property(e => e.CityId).HasColumnName("city_id");
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryId");
             entity.Property(e => e.FromDate)
                 .HasColumnType("date")
                 .HasColumnName("from_date");
-            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.ToDate)
                 .HasColumnType("date")
                 .HasColumnName("to_date");
@@ -112,6 +114,10 @@ public partial class MahaanidhieximContext : DbContext
             entity.HasOne(d => d.City).WithMany(p => p.Adds)
                 .HasForeignKey(d => d.CityId)
                 .HasConstraintName("add_table_foreign_key_1");
+
+            entity.HasOne(d=>d.Serviceprovidercategory).WithMany(p=>p.Adds)
+            .HasForeignKey(d=>d.CategoryId)
+            .HasConstraintName("add_table_foreign_key_2");
         });
 
         modelBuilder.Entity<Amenity>(entity =>
@@ -273,6 +279,8 @@ public partial class MahaanidhieximContext : DbContext
                 .HasColumnName("LoginOTP");
             entity.Property(e => e.MobileNumber).HasMaxLength(20);
             entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Address).HasMaxLength(200);
+            entity.Property(e => e.Email).HasMaxLength(45);
         });
 
         modelBuilder.Entity<Customfield>(entity =>
@@ -358,6 +366,14 @@ public partial class MahaanidhieximContext : DbContext
             entity.Property(e => e.Title).HasMaxLength(20);
         });
 
+        modelBuilder.Entity<LeadsSent>(entity => {
+            entity.HasKey(e => e.Id).HasName("PRIMARY"); 
+            entity.ToTable("leadssent");
+            entity.HasIndex(e => e.LeadsSubscriptionId, "LeadsSubscriptionId");
+            entity.HasIndex(e => e.WhatsappMessageSentId, "WhatsappMessageSentId");
+            entity.HasIndex(e => e.MessagesSentId, "MessagesSentId");
+
+        });
         modelBuilder.Entity<Organization>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -622,9 +638,9 @@ public partial class MahaanidhieximContext : DbContext
             entity.Property(e => e.ReviewDescription).HasColumnType("text");
             entity.Property(e => e.ReviewTitle).HasMaxLength(255);
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Serviceproviderreviews)
-                .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("serviceproviderreviews_ibfk_1");
+            //entity.HasOne(d => d.Customer).WithMany(p => p.Serviceproviderreviews)
+            //    .HasForeignKey(d => d.CustomerId)
+            //    .HasConstraintName("serviceproviderreviews_ibfk_1");
         });
 
         modelBuilder.Entity<Serviceproviderservice>(entity =>

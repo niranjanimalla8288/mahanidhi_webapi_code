@@ -104,6 +104,9 @@ namespace MahaanidhiWebAPI.Controllers
             _context.BusinessRegistrations.Add(businessRegistration);
             await _context.SaveChangesAsync();
 
+            //Send mail
+            Helper.MailSender.SendRegistrationEnquiryMail(businessRegistration.CompanyName,businessRegistration.Email,businessRegistration.PhoneNumber);
+
             return CreatedAtAction("GetbusinessRegistration", new { id = businessRegistration.Id }, businessRegistration);
         }
 

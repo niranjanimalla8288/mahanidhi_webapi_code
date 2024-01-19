@@ -66,7 +66,7 @@ namespace MahaanidhiWebAPI.Controllers
             {
                 // Create Customers
                 Customer customer = new Customer();
-                customer.Name = searchDTO.CustomerName; 
+                customer.Name = searchDTO.CustomerName; ;
                 customer.Email = searchDTO.CustomerEmail;   
                 customer.MobileNumber = searchDTO.CustomerMobile;
                 customer.Address = searchDTO.LookingFor;
@@ -82,9 +82,9 @@ namespace MahaanidhiWebAPI.Controllers
                             s.MainCategoryId == searchDTO.CategoryId)
                 .ToList();
 
-
-            
-
+            if(searchDTO.SearchString != "All") {
+                searchResult = searchResult.Where(s => s.BusinessName.Contains(searchDTO.SearchString)).ToList();
+            }
             if (searchDTO.CustomerName != string.Empty && (searchDTO.CustomerEmail != string.Empty || searchDTO.CustomerMobile != string.Empty))
             {
                 if (searchDTO.CityId !=0 && searchDTO.CategoryId !=0)
@@ -98,8 +98,6 @@ namespace MahaanidhiWebAPI.Controllers
                     }
                 }
             }
-
-
 
             return searchResult;
         }       

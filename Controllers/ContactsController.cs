@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MahaanidhiWebAPI.Controllers
 {
@@ -54,6 +55,7 @@ namespace MahaanidhiWebAPI.Controllers
             }
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
+            Helper.MailSender.sendContactEnquiry(contact.Name, contact.Phone, contact.Email);
 
             return CreatedAtAction("GetContacts", new { id = contact.Id }, contact);
         }

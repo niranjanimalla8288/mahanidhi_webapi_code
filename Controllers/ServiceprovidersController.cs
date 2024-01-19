@@ -37,20 +37,21 @@ namespace MahaanidhiWebAPI.Controllers
             var serviceprovider = await _context.Serviceproviders.ToListAsync();
             List<ServiceproviderDTO> lstserviceproviderDTO = new List<ServiceproviderDTO>();
             lstserviceproviderDTO = _mapper.Map<List<ServiceproviderDTO>>(serviceprovider);
+
+         
             return lstserviceproviderDTO;
         }
-
-        // GET: api/Serviceproviders/5
+        // GET: api/ServiceProvider
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceproviderDTO>> GetServiceprovider(int id)
+        public async Task<ActionResult<ServiceproviderDTO>> GetServiceProvider(int id)
         {
-          if (_context.Serviceproviders == null)
-          {
-              return NotFound();
-          }
-            var serviceprovider = await _context.Serviceproviders.FindAsync(id);
-            ServiceproviderDTO serviceproviderDTO = _mapper.Map<ServiceproviderDTO>(serviceprovider);
-            if (serviceprovider == null)
+            if (_context.Serviceproviders == null)
+            {
+                return NotFound();
+            }
+            var serviceProvider = await _context.Serviceproviders.FindAsync(id);
+            ServiceproviderDTO serviceproviderDTO= _mapper.Map<ServiceproviderDTO>(serviceProvider);
+            if (serviceProvider == null)
             {
                 return NotFound();
             }
@@ -58,6 +59,58 @@ namespace MahaanidhiWebAPI.Controllers
             return serviceproviderDTO;
         }
 
+        [HttpGet("CountMainCategories")]
+        public async Task<IActionResult> CountMainCategories()
+        {
+            try
+            {
+                // Assuming ServiceproviderDTO is the DbSet for ServiceproviderDTO entities
+                var mainCategoryIdCounts = await _context.Serviceproviders
+                    .Where(provider => provider.MainCategoryId != null)
+                    .GroupBy(provider => provider.MainCategoryId)
+                    .Select(group => new
+                    {
+                        MainCategoryId = group.Key,
+                        Count = group.Count()
+                    })
+                    .ToListAsync();
+
+                return Ok(mainCategoryIdCounts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("CountMainCategoriesWithDetails")]
+        public async Task<IActionResult> CountMainCategoriesWithDetails()
+        {
+            try
+            {
+                var mainCategoriesWithDetails = await _context.Serviceproviders
+                    .Where(provider => provider.MainCategoryId != null)
+                    .GroupBy(provider => provider.MainCategoryId)
+                    .Select(group => new
+                    {
+                        MainCategoryId = group.Key,
+                        Count = group.Count(),
+                        Details = group.Select(provider => new ServiceproviderDTO
+                        {
+                            Id = provider.Id,
+                            MainCategoryId = provider.MainCategoryId,
+                            // Include other properties you need
+                        }).ToList()
+                    })
+                    .ToListAsync();
+
+                return Ok(mainCategoriesWithDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         // PUT: api/Serviceproviders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize]
